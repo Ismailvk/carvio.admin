@@ -3,29 +3,30 @@ import 'dart:convert';
 import 'package:admin_side/data/network/api_service.dart';
 import 'package:admin_side/data/shared_preference/sharedprf.dart';
 import 'package:admin_side/models/vehicle_model.dart';
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+part 'vehicle_event.dart';
+part 'vehicle_state.dart';
 
-part 'admin_event.dart';
-part 'admin_state.dart';
-
-class AdminBloc extends Bloc<AdminEvent, AdminState> {
-  AdminBloc() : super(AdminInitial()) {
-    on<AdminFetchVehicleDataEvent>(adminFetchVehicleDataEvent);
-    on<AdminVerifyHostVehicle>(adminVerifyHostVehicle);
+class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
+  VehicleBloc() : super(VehicleInitial()) {
+    on<VehicleFetchVehicleDataEvent>(vehicleFetchVehicleDataEvent);
+    on<VehicleVerifyHostVehicle>(vehicleVerifyHostVehicle);
+    // on<VehicleFetchHostDataEvent>(vehicleFetchHostData);
   }
 
-  FutureOr<void> adminFetchVehicleDataEvent(
-      AdminFetchVehicleDataEvent event, Emitter<AdminState> emit) async {
+  FutureOr<void> vehicleFetchVehicleDataEvent(
+      VehicleFetchVehicleDataEvent event, Emitter<VehicleState> emit) async {
     final token = event.token;
     if (token == null) {
-      emit(AdminFetchFailState());
+      emit(VehicleFetchFailState());
       return;
     }
     final response = await ApiService.instance.getAllVehicle(token);
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body) as List;
+      // print(body);
       final vehicleData = body.map((e) => VehicleModel.fromJson(e)).toList();
+
       List<List<VehicleModel>> listOfVehicle = [];
       List<VehicleModel> sublistOfVehicle = [];
 
@@ -38,15 +39,16 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
         }
       }
 
-      emit(AdminFetchedDataState(vehicleModelList: listOfVehicle));
+      emit(VehicleFetchedDataState(vehicleModelList: listOfVehicle));
+      // await ApiService.instance.getAllVehicle(token);
     }
   }
 
-  FutureOr<void> adminVerifyHostVehicle(
-      AdminVerifyHostVehicle event, Emitter<AdminState> emit) async {
+  FutureOr<void> vehicleVerifyHostVehicle(
+      VehicleVerifyHostVehicle event, Emitter<VehicleState> emit) async {
     final token = Sharedpref.instance.getToken();
     if (token == null) {
-      emit(AdminVerifyHostVehicleFailedState());
+      emit(VehicleVerifyHostVehicleFailedState());
       return;
     }
     try {
@@ -54,9 +56,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
           .verifyHostVehicle(event.vehicleId, event.hostId, token);
       final body = jsonDecode(response.body);
       if (body['message'] == 'Success') {
-        emit(AdminVerifyHostVehicleSuccessState());
+        emit(VehicleVerifyHostVehicleSuccessState());
       } else {
-        emit(AdminVerifyHostVehicleErrorState());
+        emit(VehicleVerifyHostVehicleErrorState());
       }
     } catch (e) {
       print('Error $e');

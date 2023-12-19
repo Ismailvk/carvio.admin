@@ -1,5 +1,7 @@
-import 'package:admin_side/blocs/admin_bloc/admin_bloc.dart';
+import 'package:admin_side/blocs/host_bloc/host_bloc.dart';
 import 'package:admin_side/blocs/login_bloc/login_bloc.dart';
+import 'package:admin_side/blocs/user_bloc/user_bloc.dart';
+import 'package:admin_side/blocs/vehicle_bloc/vehicle_bloc.dart';
 import 'package:admin_side/data/shared_preference/sharedprf.dart';
 import 'package:admin_side/views/splash.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(),
-        ),
-        BlocProvider<AdminBloc>(
-          create: (context) => AdminBloc(),
-        ),
+        BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
+        BlocProvider<VehicleBloc>(create: (context) => VehicleBloc()),
+        BlocProvider<HostBloc>(create: (context) => HostBloc()),
+        BlocProvider<UserBloc>(create: (context) => UserBloc())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

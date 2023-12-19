@@ -4,7 +4,7 @@ import 'package:admin_side/views/bookings.dart';
 import 'package:admin_side/views/dashbord.dart';
 import 'package:admin_side/views/hosts_screen.dart';
 import 'package:admin_side/views/login_screen.dart';
-import 'package:admin_side/views/profile.dart';
+import 'package:admin_side/views/users.dart';
 import 'package:admin_side/views/vehicle.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
 
   List<Widget> pages = [
-    const DashBoardScreen(),
-    VehicleScreen(),
+    const VehicleScreen(),
     const UsersScreen(),
-    const BookingScreen(),
     const HostScreen()
   ];
 
@@ -41,12 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Image.asset('assets/images/logoBlack.png'),
                   const SizedBox(height: 20),
-                  buildListTile(0, Icons.dashboard, 'Dashboard'),
-                  buildListTile(1, Icons.directions_car, 'Vehicle'),
-                  buildListTile(2, Icons.account_circle, 'Users'),
-                  buildListTile(3, Icons.view_list, 'Booking'),
-                  buildListTile(4, Icons.diversity_3, 'Hosts'),
-                  buildListTile(5, Icons.logout, 'Logout')
+                  buildListTile(0, Icons.directions_car, 'Vehicle'),
+                  buildListTile(1, Icons.account_circle, 'Users'),
+                  buildListTile(2, Icons.diversity_3, 'Hosts'),
+                  buildListTile(3, Icons.logout, 'Logout')
                 ],
               ),
             ),
@@ -73,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: index == tabIndex ? AppColor.black : AppColor.appbarGrey),
       ),
       onTap: () {
-        if (tabIndex == 5) {
+        if (tabIndex == 3) {
           dialogBuilder(context);
         } else {
           changePage(tabIndex);

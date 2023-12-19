@@ -23,7 +23,7 @@ class SmallButtonWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          backgroundColor: AppColor.black,
+          backgroundColor: color,
         ),
         child: Text(
           title,

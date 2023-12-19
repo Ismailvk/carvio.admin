@@ -1,4 +1,4 @@
-import 'package:admin_side/blocs/admin_bloc/admin_bloc.dart';
+import 'package:admin_side/blocs/vehicle_bloc/vehicle_bloc.dart';
 import 'package:admin_side/models/vehicle_model.dart';
 import 'package:admin_side/repositories/components/alert_box.dart';
 import 'package:admin_side/repositories/components/host_details_raw_widget.dart';
@@ -19,6 +19,7 @@ class VehicleDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    isVerifeid = vehicleModel.isVerified;
     return Scaffold(
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -196,9 +197,9 @@ class VehicleDetailsScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(18),
-              child: BlocConsumer<AdminBloc, AdminState>(
+              child: BlocConsumer<VehicleBloc, VehicleState>(
                 listener: (context, state) {
-                  if (state is AdminVerifyHostVehicleSuccessState) {
+                  if (state is VehicleVerifyHostVehicleSuccessState) {
                     isVerifeid = true;
                     AlertBoxes().showSuccessDialog(context, 'Veified Success');
                   } else {
@@ -217,8 +218,8 @@ class VehicleDetailsScreen extends StatelessWidget {
                               title: 'Verify',
                               color: AppColor.black,
                               onPress: () {
-                                context.read<AdminBloc>().add(
-                                    AdminVerifyHostVehicle(
+                                context.read<VehicleBloc>().add(
+                                    VehicleVerifyHostVehicle(
                                         vehicleId: vehicleModel.id,
                                         hostId: vehicleModel.createdBy.id));
                               },

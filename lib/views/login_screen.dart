@@ -1,5 +1,7 @@
-import 'package:admin_side/blocs/admin_bloc/admin_bloc.dart';
+import 'package:admin_side/blocs/host_bloc/host_bloc.dart';
 import 'package:admin_side/blocs/login_bloc/login_bloc.dart';
+import 'package:admin_side/blocs/user_bloc/user_bloc.dart';
+import 'package:admin_side/blocs/vehicle_bloc/vehicle_bloc.dart';
 import 'package:admin_side/data/shared_preference/sharedprf.dart';
 import 'package:admin_side/repositories/components/button_widget.dart';
 import 'package:admin_side/repositories/components/custom_textfield.dart';
@@ -27,8 +29,10 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginAdminSuccessMessageState) {
             final token = Sharedpref.instance.getToken();
             context
-                .read<AdminBloc>()
-                .add(AdminFetchVehicleDataEvent(token: token));
+                .read<VehicleBloc>()
+                .add(VehicleFetchVehicleDataEvent(token: token));
+            context.read<HostBloc>().add(HostFetchDataEvent());
+            context.read<UserBloc>().add(UserDataFetchEvent());
             AnimatedSnackBar.material(
               'Login Success',
               type: AnimatedSnackBarType.success,

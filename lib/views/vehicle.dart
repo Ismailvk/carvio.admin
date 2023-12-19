@@ -1,4 +1,4 @@
-import 'package:admin_side/blocs/admin_bloc/admin_bloc.dart';
+import 'package:admin_side/blocs/vehicle_bloc/vehicle_bloc.dart';
 import 'package:admin_side/models/vehicle_model.dart';
 import 'package:admin_side/repositories/components/button_widget.dart';
 import 'package:admin_side/repositories/components/car_row_widget.dart';
@@ -30,9 +30,9 @@ class _VehicleScreenState extends State<VehicleScreen> {
           const TopbarContainer(),
           const HeadingWidget(),
           Expanded(
-            child: BlocBuilder<AdminBloc, AdminState>(
+            child: BlocBuilder<VehicleBloc, VehicleState>(
               builder: (context, state) {
-                if (state is AdminFetchedDataState) {
+                if (state is VehicleFetchedDataState) {
                   return GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -163,9 +163,9 @@ class _VehicleScreenState extends State<VehicleScreen> {
               },
             ),
           ),
-          BlocBuilder<AdminBloc, AdminState>(
+          BlocBuilder<VehicleBloc, VehicleState>(
             builder: (context, state) {
-              if (state is AdminFetchedDataState) {
+              if (state is VehicleFetchedDataState) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 300),
                   child: NumberPaginator(

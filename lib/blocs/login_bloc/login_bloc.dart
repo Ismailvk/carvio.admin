@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:admin_side/blocs/admin_bloc/admin_bloc.dart';
 import 'package:admin_side/data/network/api_service.dart';
 import 'package:admin_side/data/shared_preference/sharedprf.dart';
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -24,7 +22,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         final token = body['token'];
-        print('token is get $token');
         Sharedpref.instance.storeToken(token);
         emit(LoginAdminSuccessMessageState());
       } else if (response.statusCode == 404) {

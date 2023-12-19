@@ -6,6 +6,7 @@ class ApiService {
   ApiService._();
   static final ApiService _instance = ApiService._();
   static ApiService get instance => _instance;
+
   final headers = {"Content-Type": "application/json"};
 
   Future<http.Response> login(loginData) async {
@@ -35,9 +36,66 @@ class ApiService {
       'Cookie': 'jwtHost=$token'
     };
     final response = await http.patch(url, headers: header);
+    return response;
+  }
 
+  rejectHostVehicle() {
+    //
+  }
+
+  Future<http.Response> getAllHosts(String token) async {
+    final url = Uri.parse("${Url.baseUrl}/${Url.getAllHosts}");
+    final header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+      'Cookie': 'jwtHost=$token'
+    };
+    final response = await http.get(url, headers: header);
+    return response;
+  }
+
+  Future<http.Response> verifyHost(String id, String token) async {
+    final url = Uri.parse('${Url.baseUrl}/${Url.verifyHost}/$id');
+    final header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+      'Cookie': 'jwtHost=$token'
+    };
+    final response = await http.post(url, headers: header);
+    return response;
+  }
+
+  Future<http.Response> getAllUsers(String token) async {
+    final url = Uri.parse('${Url.baseUrl}/${Url.getAllUsers}');
+    final header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+      'Cookie': 'jwtHost=$token'
+    };
+    final response = await http.get(url, headers: header);
+    return response;
+  }
+
+  Future<http.Response> blockUser(String id, String token) async {
+    final url = Uri.parse('${Url.baseUrl}/${Url.blockUser}/$id');
+    final header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+      'Cookie': 'jwtHost=$token'
+    };
+    final response = await http.patch(url, headers: header);
+    return response;
+  }
+
+  Future<http.Response> unBlockUser(String id, String token) async {
+    final url = Uri.parse('${Url.baseUrl}/${Url.unBlockUser}/$id');
+    final header = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+      'Cookie': 'jwtHost=$token'
+    };
+    final response = await http.patch(url, headers: header);
     print(response.statusCode);
-    print("Body is ${response.body}");
     return response;
   }
 }
